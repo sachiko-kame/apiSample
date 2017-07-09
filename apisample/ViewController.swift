@@ -73,15 +73,20 @@ class ViewController: UIViewController , UITableViewDelegate, UITableViewDataSou
             let req = NSMutableURLRequest(url: url)
             req.httpMethod = "GET"
             let task = URLSession.shared.dataTask(with: req as URLRequest, completionHandler: { (data, resp, err) in
+                
+                guard let data = data, let resp = resp else {
+                    return
+                }
+                
                 //リクエストしたurl
-                print(resp!.url!)
+                print(resp.url!)
                 //帰ってきたdata
-                print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as Any)
+                print(NSString(data: data, encoding: String.Encoding.utf8.rawValue) as Any)
                 
                 // 受け取ったdataをJSONパースし辞書型に変換、エラーならcatchへジャンプ
                 do {
                     // dataをJSONパースし、変数"getJson"に格納
-                    getJson = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                    getJson = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                     //取り出していく処理辞書型からの取り出し。
                     jsonIp = (getJson["IP"] as? String)!
                     jsonHostname = (getJson["Hostname"] as? String)!
