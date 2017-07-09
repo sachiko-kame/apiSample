@@ -12,9 +12,14 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private var nc: UINavigationController?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let FirstViewController: ViewController = ViewController()
+        nc = UINavigationController(rootViewController: FirstViewController)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = nc
         // Override point for customization after application launch.
         return true
     }
