@@ -52,6 +52,48 @@ class ViewController: UIViewController , UITableViewDelegate, UITableViewDataSou
             //情報が入った時点でテーブルを更新。情報が入った状態なのでしっかり表示される。
             self.table.reloadData()
         }
+        
+        
+//パターン2参考:http://qiita.com/nao007_smiley/items/b8df6222cfeb63c842d0
+        var getJson: NSDictionary!
+        
+        // 抽出した"ip"を格納する変数を定義
+        var jsonIp = ""
+        
+        // 抽出した"hostname"を格納する変数を定義
+        var jsonHostname = ""
+        
+        // 抽出した"ip"と"hostname"を結合する変数を定義
+        var jsonString = ""
+        
+        // API接続先
+        let urlStr = "http://inet-ip.info/json"
+        
+        if let url = URL(string: urlStr) {
+            let req = NSMutableURLRequest(url: url)
+            req.httpMethod = "GET"
+            let task = URLSession.shared.dataTask(with: req as URLRequest, completionHandler: { (data, resp, err) in
+                //リクエストしたurl
+                print(resp!.url!)
+                //帰ってきたdata
+                print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as Any)
+                
+                // 受け取ったdataをJSONパースし辞書型に変換、エラーならcatchへジャンプ
+                do {
+                    // dataをJSONパースし、変数"getJson"に格納
+                    getJson = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                    //取り出していく処理辞書型からの取り出し。
+                    jsonIp = (getJson["IP"] as? String)!
+                    jsonHostname = (getJson["Hostname"] as? String)!
+                    
+                } catch {
+                    print ("json error")
+                    return
+                }
+            })
+            task.resume()
+        
+        }
     
     
     }
