@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 
+//参考:http://qiita.com/yutasuzuki/items/15682d737745acd03584
 class ViewController: UIViewController , UITableViewDelegate, UITableViewDataSource{
     // itemsをJSONの配列と定義
     var items: [JSON] = []
